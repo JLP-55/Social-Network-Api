@@ -1,47 +1,32 @@
-const {Schema, model} = require("mongoose");
+const mongoose = require("mongoose");
 
-const userSchema = new Schema(
+// define the schema
+const userSchema = new mongoose.Schema (
 	{
-		username {
-			type: String,
-			required: true,
-			// trimmed: true
-		},
-		email {
+		username: {
+			// Just doing the very basica of a model to get something working.
 			type: String,
 			required: true,
 		},
-		thoughts {},
-		friends {},
+		email: {
+			type: String,
+			required: true,
+		}
 	}
 );
 
-const User = module("user", )
+const User = mongoose.model("User", userSchema);
 
-module.exports = model("", userScheam);
+const errorHandler = (err) => console.log(err);
 
-// example from mongoosejs.com
-// const schema = new Schema({
-//   name: {
-//     type: String,
-//     required: true
-//   }
-// });
-// const Cat = db.model('Cat', schema);
+// create the schema
+User
+ .create({
+	username: "Trial_test-username",
+	email: "Trial_test-email",
+ })
+	.then(result => console.log("trial success", result))
+	.catch(err => errorHandler(err));
 
-// // This cat has no name :(
-// const cat = new Cat();
-
-// let error;
-// try {
-//   await cat.save();
-// } catch (err) {
-//   error = err;
-// }
-
-// assert.equal(error.errors['name'].message,
-//   'Path `name` is required.');
-
-// error = cat.validateSync();
-// assert.equal(error.errors['name'].message,
-//   'Path `name` is required.');
+// export the schema
+module.exports = User;

@@ -1,5 +1,3 @@
-const User = requre("./user.js");
-const Thoughts = require("./thoughts.js");
-const Reaction = require("./reaction.js");
+const User = require("./user.js");
 
-module.exports = {User, Thoughts, Reaction};
+module.exports = {User};

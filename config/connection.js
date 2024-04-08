@@ -1,7 +1,5 @@
 const mongoose = require("mongoose");
 
-// mongoose connection to the local server
-mongoose.connect("mongodb://127.0.0.1:2717/aggragateDB");
+mongoose.connect("mongodb://127.0.0.1:27017/social_network_DB");
 
-// export connection
-module.exports = mongoose.connection
+module.exports = mongoose.connection;
