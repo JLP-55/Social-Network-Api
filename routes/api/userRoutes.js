@@ -2,6 +2,8 @@ const router = require("express").Router();
 
 const {
 	getUsers,
-} = require(/*The path to the controllers folder and subsequent files (to be created)*/);
+} = require("../../controllers/userController");
+
+router.route("/").get(getUsers);
 
 module.exports = router
