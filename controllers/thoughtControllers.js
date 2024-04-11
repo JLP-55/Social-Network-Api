@@ -1,4 +1,5 @@
-const Thought = require("../models");
+// ensure to specify the exact path to the model of you are destructuring {User, Thought}
+const Thought = require("../models/thoughtModel.js");
 
 module.exports = {
 	async getThoughts(rq, rs) {
