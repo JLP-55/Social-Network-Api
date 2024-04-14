@@ -1,0 +1,5 @@
+Why do I get an duplicate key error when creating a new user, despite having "unique: true" commented out or set to false?
+
+Routing questions
+    - What is the purpose of the "path:" in the get/post/create/delete routes in "controllers"? My getSingleUser route isn't returning a user when searching for an id value
+    - Why doesn't my regex for matching an email work?
