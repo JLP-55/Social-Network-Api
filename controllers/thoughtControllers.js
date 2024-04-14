@@ -3,6 +3,7 @@ const Thought = require("../models/thoughtModel.js");
 const User = require("../models/userModel.js");
 
 module.exports = {
+	// get thoughts route works
 	async getThoughts(rq, rs) {
 		try {
 			const thought = await Thought.find();
@@ -15,6 +16,7 @@ module.exports = {
 	async createThoughts(rq, rs) {
 		// will get an error when creating a new thought
 		// cannot set headers after they are sent to the client
+		// route technically can post a thought however
 		try {
 			const newThought = await Thought.create(rq.body);
 			const user = await User.findOneAndUpdate(
@@ -36,5 +38,14 @@ module.exports = {
 			rs.status(500).json(err);
 			console.log(err);
 		}
-	}
+	},
+	// uncomment the lines in thought routes also
+	// async updateThoughts(rq, rs) {
+	// 	try {
+	// 		const updateThoughts	
+	// 	} catch (err) {
+	// 		rs.status(500).json(err);
+	// 		console.log(err);
+	// 	}
+	// }
 };

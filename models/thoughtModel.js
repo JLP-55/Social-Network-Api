@@ -9,8 +9,8 @@ const thoughtSchema = new mongoose.Schema(
 			minLenght: 1
 		},
 		createdAt: {
-			type: Date,
-			default: Date.now,
+			// type: Date,
+			// default: Date.now,
 		},
 		username: {
 			type: String,
@@ -27,6 +27,7 @@ const thoughtSchema = new mongoose.Schema(
 		}	
 );
 
+// in the usermodels we reference the thought model, created from the thoughtSchema?
 const Thought = mongoose.model("Thought", thoughtSchema);
 const errorHandler = (err) => console.log(err);
 

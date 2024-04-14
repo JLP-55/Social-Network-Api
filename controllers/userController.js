@@ -4,6 +4,7 @@ const User = require("../models/userModel.js");
 const Thought = require("../models/thoughtModel.js");
 
 module.exports = {
+	// get users route works
 	async getUsers(rq, rs) {
 		try {
 			const user = await User.find();
@@ -13,11 +14,13 @@ module.exports = {
 			console.log(err);
 		}
 	},
-	// new route
-	// what does the path reference? the model that we have exported?
+	// get single user route doen't work
+	// returns a "headers sent to client" error
+	// seemingly it can still return the first user in the database, 
+	// not the specifically searched for user however
 	async getSingleUser(rq, rs) {
 		try {
-			// this will only get the first user and the return "headers sent" error
+			// what is the difference between "userId" and "ObjectId"
 			const post = await User.findOne({name: rq.params.ObjectId});
 			rs.status(200).json(post);
 			// const post = await User.findOne({_id: rq.params.postId}).populate({
@@ -35,9 +38,10 @@ module.exports = {
 			console.log(err);
 		}
 	},
+	// post route works 
 	async createUser(rq, rs) {
-		try {
 			const newUser = await User.create(rq.body);
+		try {
 			rs.json(newUser);
 			console.log(newUser);
 		} catch (err) {
@@ -45,6 +49,7 @@ module.exports = {
 			console.log(err);
 		}
 	},
+	// update route doen't work
 	async updateUser(rq, rs) {
 		try {
 			const newUpdate = await User.findOneAndUpdate(/*figure out what has to go here*/)
@@ -52,11 +57,13 @@ module.exports = {
 			rs.status(500).json(err);
 			console.log(err);
 		}
-	}
+	},
+	// delete route works 
 	async deleteUser(rq, rs) {
 		try {
 			const deleteUser = await User.findOneAndDelete({_id: rq.params.userId});
-			rs.status(200).json(deleteUser);			
+			console.log(deleteUser);
+			rs.status(200).json({message: "user deleted"});			
 		} catch (err) {
 			rs.status(500).json(err);
 			console.log(err);

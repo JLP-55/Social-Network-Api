@@ -1,7 +1,8 @@
 const mongoose = require("mongoose");
+const {Schema, Model} = require("mongoose");
 
 // define the schema
-const userSchema = new mongoose.Schema (
+const userSchema = new Schema (
 	{
 		username: {
 			type: String,
@@ -16,11 +17,18 @@ const userSchema = new mongoose.Schema (
 			// this regex isn't working
 			// match: [/^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/]
 		},
-		anotherItem: {
-			type: String,
-			required: true,
-			unique: true,
-		}
+		// array of _id values referencing the Thought model
+		thoughts: [{
+			type: Schema.types.ObjectId,
+			// should this reference the "Thought" model created from the schema on line 30 in the thoughtModel.js file?
+			ref: "Thought"
+		}],
+		// array of _id values referencing the User model
+		friends: [{
+			type: Schema.types.ObjectId,
+			// same here, not sure if we are supposed to reference the model "User" created below?
+			ref: "User"
+		}]
 	},
 		{
 			toJSON: {
