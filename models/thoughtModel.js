@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const Schema = require("mongoose");
 
 const thoughtSchema = new mongoose.Schema(
 	{
@@ -9,8 +10,8 @@ const thoughtSchema = new mongoose.Schema(
 			minLenght: 1
 		},
 		createdAt: {
-			// type: Date,
-			// default: Date.now,
+			type: Date,
+			default: Date.now,
 		},
 		username: {
 			type: String,
@@ -30,6 +31,36 @@ const thoughtSchema = new mongoose.Schema(
 // in the usermodels we reference the thought model, created from the thoughtSchema?
 const Thought = mongoose.model("Thought", thoughtSchema);
 const errorHandler = (err) => console.log(err);
+
+// reaction schema is a subdocument?
+const reactionSchema = new mongoose.Schema(
+	{
+		reactionId: {
+			type: Schema.Types.ObjectId,
+			default: () => new Types.ObjectId()
+		},
+		reactionBody: {
+			type: String,
+			required: true,
+			maxLength: 280,
+		},
+		username: {
+			type: String,
+			required: true
+		},
+		createdAt: {
+			type: Date,
+			default: Date.now,
+			// format timestamp
+			get: (createdAtVal) => moment(createdAtVal).format("DD, MM, YYYY")
+		}
+	},
+		{
+			toJSON: {
+				getters: true
+		}	
+	}
+)
 
 // Thought 
 // 	. create({
