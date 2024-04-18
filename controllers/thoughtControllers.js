@@ -17,7 +17,10 @@ module.exports = {
 	async getSingleThought(rq, rs) {
 		try {
 			const thought = await Thought.findOne({_id: rq.params.userId});
-			rs.json(thought);
+			// rs.json(thought);
+			!thought
+				?rs.status(404).json({message: "no such thought exists"})
+				:rs.status(200).json(thought);
 			console.log(thought);
 		} catch (err) {
 			rs.status(500).json(err);
@@ -61,15 +64,16 @@ module.exports = {
 			console.log(err);
 		}
 	},
-	// deleteThoughts route is incomplete
+	// delete route works
 	async deleteThoughts(rq, rs) {
 		try {
 			const deleteThoughts = await Thought.findOneAndDelete(
-
+				{_id: rq.params.userId}
 			);
+			console.log(deleteThoughts);
 			!deleteThoughts
-				? rs.status(400).json({message: "no thoughts with that id"})
-				: rs.status(200).json(deleteThoughts);
+				? rs.status(404).json({message: "no thoughts with that id"})
+				: rs.status(200).json({message: "thought deleted"});
 		} catch (err) {
 			rs.status(500).json(err);
 			console.log(err);
