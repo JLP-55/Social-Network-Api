@@ -20,7 +20,7 @@ module.exports = {
 		try {
 			// what is the difference between "userId" and "ObjectId"
 			// ObjectId is the unique id within mongodb and userId is the path parameter I have created?
-			const post = await User.findOne({name: rq.params.userId}, console.log(rq.params.userId));
+			const post = await User.findOne({_id: rq.params.userId});
 			// post is null???
 			console.log(post);
 			// rs.status(200).json(post);

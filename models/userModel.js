@@ -19,7 +19,7 @@ const userSchema = new Schema (
 		// this commented out section of code is giving error: "type: Schema.types.ObjectId,"
 		// array of _id values referencing the Thought model
 		thoughts: [{
-			type: Schema.types.ObjectId,
+			type: Schema.Types.ObjectId,
 			// should this reference the "Thought" model created from the schema in the thoughtModel.js file?
 			// or should it reference the thoughtSchema?
 			ref: "thoughtSchema"
@@ -27,7 +27,7 @@ const userSchema = new Schema (
 		}],
 		// array of _id values referencing the User model
 		friends: [{
-			type: Schema.types.ObjectId,
+			type: Schema.Types.ObjectId,
 			// same here, not sure if we are supposed to reference the model "User" created below or the userSchema defined above?
 			ref: "userSchema"
 			// ref: "User"
@@ -47,8 +47,7 @@ userSchema.virtual("friendCount").get(function () {
 // It should retrieve the length of the user's friends array field on query.
 // Currently doesn't do this
 	// check that this works once the use has some friends
-	// const schema = `${this.friends.length}`;
-	const schema = `${this.username}`;
+	const schema = `${this.friends.length}`;
 	return schema
 	console.log(schema);
 });
