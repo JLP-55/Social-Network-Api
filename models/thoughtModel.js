@@ -62,12 +62,4 @@ const reactionSchema = new mongoose.Schema(
 	}
 )
 
-// Thought 
-// 	. create({
-// 		thoughtText: "trial text block",
-// 		createdAt: "This will be a date or something",
-// 	})
-// 	.then(result => console.log("trial success", result))
-// 	.catch(err => errorHandler(err));
-
 module.exports = Thought
