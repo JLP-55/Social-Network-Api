@@ -7,13 +7,13 @@ const userSchema = new Schema (
 		username: {
 			type: String,
 			required: true,
-			// unique: true,
+			unique: true,
 			trim: true,
 		},
 		email: {
 			type: String,
 			required: true,
-			// unique: true,
+			unique: true,
 			match: [/^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/]
 		},
 		// this commented out section of code is giving error: "type: Schema.types.ObjectId,"
@@ -42,10 +42,9 @@ const userSchema = new Schema (
 );
 
 // getter for the total number of friends
-userSchema.virtual("friendCount").get(function () {
 // Create a virtual called friendCount.
 // It should retrieve the length of the user's friends array field on query.
-// Currently doesn't do this
+userSchema.virtual("friendCount").get(function () {
 	// check that this works once the use has some friends
 	const schema = `${this.friends.length}`;
 	return schema
