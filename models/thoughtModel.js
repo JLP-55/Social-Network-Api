@@ -17,6 +17,7 @@ const thoughtSchema = new mongoose.Schema(
 			type: String,
 			required: true,
 		},
+		// reference error "cannot access reactionSchema before initialisation"
 		// reactions: [reactionSchema],
 	},
 		{

@@ -14,25 +14,13 @@ module.exports = {
 			console.log(err);
 		}
 	},
-	// get single user route doen't work
-	// having an issue with the userId parameter, says there are no user's with specific id in the path parameter
 	async getSingleUser(rq, rs) {
 		try {
-			// what is the difference between "userId" and "ObjectId"
-			// ObjectId is the unique id within mongodb and userId is the path parameter I have created?
-			const post = await User.findOne({_id: rq.params.userId});
-			// post is null???
-			console.log(post);
-			// rs.status(200).json(post);
-			// const post = await User.findOne({_id: rq.params.postId}).populate({
-			// 	// I am not sure what you need for the path
-			// 	// this path currently returns a 404 error not found message
-			// 	path: "User",
-			// });
+			const user = await User.findOne({_id: rq.params.userId});
 
-			!post
+			!user
 				? rs.status(404).json({message: "no user with that id"}) 
-				: rs.json(post);
+				: rs.json(user);
 		} catch (err) {
 			rs.status(500).json(err);
 			console.log(err);
@@ -52,19 +40,40 @@ module.exports = {
 	// update route doen't work
 	// "err: rs.status is not a function"
 	// comment this out and get "cannot read properties of undefined (reading userId)"
-	async updateUser(/*{params, body},*/rq, rs) {
-		try {
-			console.log(body);
-			// console.log(rq.params.userId);
-			const newUpdate = await User.findOneAndUpdate(
-				{_id: rq.params.userId},
-				body, {new: true, runValidators: true})
-			console.log(newUpdate);
-		} catch (err) {
-			// rs.status(500).json(err);
-			console.log(err);
-		}
-	},
+	// async updateUser({params, body},rq, rs) {
+	// 	try {
+	// 		const newUpdate = await User.findOneAndUpdate(
+	// 			{_id: params.id},
+	// 			body, {new: true, runValidators: true}
+	// 		);
+	// 		// console.log(rq.params.userId);
+	// 		// rs.json(newUpdate);
+	// 		console.log(body);
+	// 		rs.status(200).json(newUpdate);
+	// 		!newUpdate
+	// 			? rs.status(500).json({message: "no such user"})
+	// 			: rs.status(200).json(newUpdate);
+	// 		// console.log(newUpdate);
+	// 	} catch (err) {
+	// 		// error "rs.status(500).json(err)" is not a function
+	// 		//		     ^
+	// 		// rs.status(500).json(err);
+	// 		console.log(err);
+	// 	}
+	// },
+
+	// updateUser route works (using thenables)
+	 updateUser(rq, rs) {
+        User.findOneAndUpdate(rq.params.id, rq.body, { new: true })
+        .then(userData => {
+        	if (!userData) {
+        		return rs.status(404).json({ message: 'User not found' });
+        	}
+        	rs.json(userData);
+        })
+        .catch(err => rs.status(500).json(err));
+    },
+
 	// delete route works 
 	async deleteUser(rq, rs) {
 		try {
@@ -79,5 +88,54 @@ module.exports = {
 			rs.status(500).json(err);
 			console.log(err);
 		}
-	}
+	},
+	// addFriend route works (using thenables)
+	addFriend(rq, rs) {
+        User.findOneAndUpdate(
+            { _id: rq.params.userId },
+            { $addToSet: { friends: rq.body.friendId || rq.params.friendId } },
+            { new: true }
+        )
+        .then(userData => {
+        	if (!userData) {
+        		return rs.status(404).json({ message: 'User not found' });
+        	}
+        	rs.json(userData);
+        })
+        .catch(err => rs.status(500).json(err));
+    },
+    // error: "rs.status" is not a function
+	// async deleteFriend({params}, rq, rs) {
+    // 	try {
+    // 		const deleteFriend = await User.findOneAndUpdate(
+	// 			{_id: params.userId},
+	// 			// use $pull to remove from the array the specific friendId specified in the path parameters
+	// 			{$pull: {friends: params.friendId}},
+	// 			// send the updated search back to the user using "new: true"
+	// 			{new: true}
+	// 		)
+
+    // 		!deleteFriend
+    // 			? rs.status(404).json({message: "no user with that id"})
+    // 			: rs.status(200).json(deleteFriend);
+    // 	} catch (err) {
+    // 		rs.status(500).json(err);
+    // 		console.log(err);
+    // 	}
+    // }
+
+    // deleteFriend route works (using thenables)
+     deleteFriend({ params }, res) {
+        User.findOneAndUpdate(
+            { _id: params.userId },
+            { $pull: { friends: params.friendId } },
+            { new: true }
+        )
+        .then((friendData) => {
+        	!friendData
+        	? res.status(500).json({message: "not found"})
+        	: res.status(200).json(friendData);
+        })
+        .catch((err) => res.status(400).json(err));
+    },
 };
