@@ -109,14 +109,14 @@ module.exports = {
     // 	try {
     // 		const deleteFriend = await User.findOneAndUpdate(
 	// 			{_id: params.userId},
-	// 			// use $pull to remove from the array the specific friendId specified in the path parameters
+				// use $pull to remove from the array the specific friendId specified in the path parameters
 	// 			{$pull: {friends: params.friendId}},
-	// 			// send the updated search back to the user using "new: true"
+				// send the updated search back to the user using "new: true"
 	// 			{new: true}
 	// 		)
 
     // 		!deleteFriend
-    // 			? rs.status(404).json({message: "no user with that id"})
+    			// ? rs.status(404).json({message: "no user with that id"})
     // 			: rs.status(200).json(deleteFriend);
     // 	} catch (err) {
     // 		rs.status(500).json(err);
