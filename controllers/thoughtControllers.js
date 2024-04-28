@@ -47,8 +47,9 @@ module.exports = {
 			console.log(err);
 		}
 	},
-	// updateThoughts route still needs work
-	// currently it will not actually update a thought, only respond with the thought who's id the user has selected
+	// TODO: this route isn't functioning correctly
+	// ! currently it will not actually update a thought, 
+	// ! only respond with the thought who's id the user has selected
 	async updateThoughts(rq, rs) {
 		try {
 			const updateThoughts = await Thought.findOneAndUpdate(
@@ -83,7 +84,7 @@ module.exports = {
 			console.log(err);
 		}
 	},
-	// need to test this route, not sure if it is working
+	// TODO: need to test this route, not sure if it is working
 	async addReaction(rq, rs) {
 		try {
 			const addReaction = await Thought.findOneAndUpdate(
