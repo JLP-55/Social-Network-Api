@@ -69,7 +69,7 @@ module.exports = {
 			console.log(err);
 		}
 	},
-	// delete route works
+	// deleteThought route works
 	async deleteThoughts(rq, rs) {
 		try {
 			const deleteThoughts = await Thought.findOneAndDelete(
@@ -84,17 +84,35 @@ module.exports = {
 			console.log(err);
 		}
 	},
-	// TODO: need to test this route, not sure if it is working
+	// addReaction route works
 	async addReaction(rq, rs) {
 		try {
 			const addReaction = await Thought.findOneAndUpdate(
 				{_id: rq.params.thoughtId},
+				{$push: {reactions: rq.body}},
 				{$addToSet: {thoughts: rq.body.thoughtId || rq.params.thoughtId}},
 				{new: true}
 			);
 				!addReaction
 					? rs.status(500).json({message: "no such thought"})
 					: rs.status(200).json(addReaction);
+					console.log(addReaction);
+		} catch (err) {
+			rs.status(500).json(err);
+			console.log(err);
+		}
+	},
+	async deleteReaction(rq, rs) {
+		try {
+			const deleteReaction = await Thought.findOneAndDelete(
+				{_id: rq.params.thoughtId},
+				{$pull: {reactions: {reactionId: rq.params.reactionId}}},
+				{new: true}
+			);
+
+			!deleteReaction
+				? rs.status(500).json({message: "no such reaction exists"})
+				: rs.status(200).json(deleteReaction);
 		} catch (err) {
 			rs.status(500).json(err);
 			console.log(err);
