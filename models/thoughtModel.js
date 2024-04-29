@@ -1,38 +1,6 @@
 const mongoose = require("mongoose");
 const Schema = require("mongoose");
 
-const thoughtSchema = new mongoose.Schema(
-	{
-		thoughtText: {
-			type: String,
-			required: true,
-			maxLength: 280,
-			minLenght: 1
-		},
-		createdAt: {
-			type: Date,
-			default: Date.now,
-		},
-		username: {
-			type: String,
-			required: true,
-		},
-		// reference error "cannot access reactionSchema before initialisation"
-		// reactions: [reactionSchema],
-	},
-		{
-			toJSON: {
-				virtuals: true,
-				getters: true
-			},
-			id: false
-		}	
-);
-
-// in the usermodels we reference the thought model, created from the thoughtSchema?
-const Thought = mongoose.model("Thought", thoughtSchema);
-const errorHandler = (err) => console.log(err);
-
 // reaction schema is a subdocument?
 const reactionSchema = new mongoose.Schema(
 	{
@@ -53,7 +21,8 @@ const reactionSchema = new mongoose.Schema(
 			type: Date,
 			default: Date.now,
 			// format timestamp
-			get: (createdAtVal) => moment(createdAtVal).format("DD, MM, YYYY")
+			// currently gets an error (something is not defined)
+			// get: (createdAtVal) => moment(createdAtVal).format("DD, MM, YYYY")
 		}
 	},
 		{
@@ -62,5 +31,36 @@ const reactionSchema = new mongoose.Schema(
 		}	
 	}
 )
+
+const thoughtSchema = new mongoose.Schema(
+	{
+		thoughtText: {
+			type: String,
+			required: true,
+			maxLength: 280,
+			minLenght: 1
+		},
+		createdAt: {
+			type: Date,
+			default: Date.now,
+		},
+		username: {
+			type: String,
+			required: true,
+		},
+		reactions: [reactionSchema],
+	},
+		{
+			toJSON: {
+				virtuals: true,
+				getters: true
+			},
+			id: false
+		}	
+);
+
+// in the usermodels we reference the thought model, created from the thoughtSchema?
+const Thought = mongoose.model("Thought", thoughtSchema);
+const errorHandler = (err) => console.log(err);
 
 module.exports = Thought
