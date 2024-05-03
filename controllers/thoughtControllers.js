@@ -47,28 +47,40 @@ module.exports = {
 			console.log(err);
 		}
 	},
+	// updateThoughs route works (using thenables)
+	 updateThoughts(rq, rs) {
+        Thought.findOneAndUpdate(rq.params.id, rq.body, { new: true })
+        .then(thoughtData => {
+        	if (!thoughtData) {
+        		return rs.status(404).json({ message: 'thought not found' });
+        	}
+        	rs.json(thoughtData);
+        })
+        .catch(err => rs.status(500).json(err));
+    },
 	// TODO: this route isn't functioning correctly
 	// ! currently it will not actually update a thought, 
 	// ! only respond with the thought who's id the user has selected
-	async updateThoughts(rq, rs) {
-		try {
-			const updateThoughts = await Thought.findOneAndUpdate(
-				{_id: rq.params.thoughtId},
-				// we want to add to the set thougts, either the thought with the id specified in the path parameters or the id specified in the body
-				{$addToSet: {thoughts: rq.body.thoughtId || rq.params.thoughtId}},
-				{new: true}
-				// we need to actually take some user input and update the given "rq.body.thoughtId"
-				// use "$addToSet"? Can't remember what this does.
-			);
-			!updateThoughts
-			 	? rs.status(404).json({message: "no thought with that id"})
-			 	: rs.status(200).json(updateThoughts);
-			console.log(updateThoughts);
-		} catch (err) {
-			rs.status(500).json(err);
-			console.log(err);
-		}
-	},
+	// async updateThoughts(rq, rs) {
+	// 	try {
+	// 		const updateThoughts = await Thought.findOneAndUpdate(
+	// 			{_id: rq.params.thoughtId},
+	// 			// we want to add to the set thougts, either the thought with the id specified in the path parameters or the id specified in the body
+	// 			{$addToSet: {thoughts: rq.body.thoughtId || rq.params.thoughtId}},
+	// 			// {$push: {thoughts: rq.body.thoughtId || rq.params.thoughtId}},
+	// 			{new: true}
+	// 			// we need to actually take some user input and update the given "rq.body.thoughtId"
+	// 			// use "$addToSet"? Can't remember what this does.
+	// 		);
+	// 		!updateThoughts
+	// 		 	? rs.status(404).json({message: "no thought with that id"})
+	// 		 	: rs.status(200).json(updateThoughts);
+	// 		console.log(updateThoughts);
+	// 	} catch (err) {
+	// 		rs.status(500).json(err);
+	// 		console.log(err);
+	// 	}
+	// },
 	// deleteThought route works
 	async deleteThoughts(rq, rs) {
 		try {
@@ -102,9 +114,10 @@ module.exports = {
 			console.log(err);
 		}
 	},
+	// deleteReaction route doesn't work even after using findOneAndUpdate, not sure why
 	async deleteReaction(rq, rs) {
 		try {
-			const deleteReaction = await Thought.findOneAndDelete(
+			const deleteReaction = await Thought.findOneAndUpdate(
 				{_id: rq.params.thoughtId},
 				{$pull: {reactions: {reactionId: rq.params.reactionId}}},
 				{new: true}

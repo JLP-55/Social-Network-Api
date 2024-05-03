@@ -1,5 +1,7 @@
 const mongoose = require("mongoose");
 const Schema = require("mongoose");
+// use the date library "moment" for easy formatting of the date
+moment = require("moment");
 
 // reaction schema is a subdocument?
 const reactionSchema = new mongoose.Schema(
@@ -21,8 +23,7 @@ const reactionSchema = new mongoose.Schema(
 			type: Date,
 			default: Date.now,
 			// format timestamp
-			// currently gets an error (something is not defined)
-			// get: (createdAtVal) => moment(createdAtVal).format("DD, MM, YYYY")
+			get: (createdAtVal) => moment(createdAtVal).format("DD, MM, YYYY")
 		}
 	},
 		{

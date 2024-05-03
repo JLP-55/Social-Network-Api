@@ -83,7 +83,7 @@ module.exports = {
 
 			!deleteUser
 				? rs.status(404).json({message: "no user with that id"}) 
-				: rs.status(200).json(deleteUser);
+				: rs.status(200).json({message: "user deleted"});
 		} catch (err) {
 			rs.status(500).json(err);
 			console.log(err);
