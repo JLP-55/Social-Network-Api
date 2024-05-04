@@ -12,7 +12,9 @@ Finally you will be able to test the application in either a dedicated API clien
 
 ### Links
 
-[user routes walkthrough](https://www.youtube.com/watch?v=rrbQRT18pbI)
-[thought routes walkthough](https://www.youtube.com/watch?v=yli37gEICVA)
+[user routes walkthrough](https://www.youtube.com/watch?v=rrbQRT18pbI)<br>
+[thought routes walkthough](https://www.youtube.com/watch?v=yli37gEICVA)<br>
 
 ### Licence
+
+MIT Licence
